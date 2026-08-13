@@ -1,6 +1,6 @@
-# Setup — Windows 11 + WSL2 + Ubuntu 24.04 + ROS 2 Jazzy + Gazebo + UR5e
+# Lab 00: Set Up — Windows 11 + WSL2 + Ubuntu 24.04 + ROS 2 Jazzy + Gazebo + UR5e
 
-Complete this setup **before Lab 01**.
+Complete Lab 00 **before Lab 01**.
 
 ## 1. Install WSL2 and Ubuntu 24.04
 
@@ -199,7 +199,7 @@ The robot should move over approximately five seconds.
 From this repository:
 
 ```bash
-bash setup/verify_installation.sh
+bash lab00_setup/verify_installation.sh
 ```
 
 Fix all reported failures before Lab 01.

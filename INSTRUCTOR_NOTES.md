@@ -22,10 +22,10 @@
 ## Before release to students
 
 1. Test every command on the exact Fall 2026 environment.
-2. Pin the UR simulation dependency versions/commits.
+2. Pin the Webots release and UR5e PROTO version used for grading.
 3. Provide the exact UR5e frame convention and kinematic parameter table for Lab 04.
-4. Verify what effort/state data the Gazebo configuration exposes for Lab 09; provide a recorded dataset if needed.
-5. Decide whether Lab 10 remains a Python plant-control lab or gains an effort-controlled Gazebo extension.
+4. Verify what motor torque feedback the Webots model exposes for Lab 09; provide a recorded dataset if needed.
+5. Decide whether Lab 10 remains a Python plant-control lab or gains a torque-controlled Webots extension.
 6. Decide whether the final project includes a gripper model.
 
 Do not publish instructor solutions in the public student repository.

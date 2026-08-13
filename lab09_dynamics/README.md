@@ -1,27 +1,21 @@
-# Lab 09 — Manipulator Dynamics
+# Lab 09 ? Manipulator Dynamics
 
-## Purpose
+## Motivation
 
-Connect `M(q)qdd + C(q,qd)qd + g(q) = tau` to simulation behavior. Use a simplified dynamics model and design repeatable trials that vary speed and/or payload. Explain which terms dominate in slow motion, rapid acceleration, and static holding.
+Kinematics predicts motion; dynamics explains the effort required and why payload and acceleration matter.
 
-## Workflow
+## Learning objectives
 
-1. Read the complete lab before coding.
-2. Reuse validated functions from earlier labs.
-3. Keep frame/kinematic conventions explicit.
-4. Run repeatable experiments.
-5. Put generated data and figures in `results/`.
+Interpret `M(q)qdd + C(q,qd)qd + g(q) = tau`; implement a simplified model; separate gravity, inertia, and velocity effects; and compare predictions with Webots physics trials.
 
-## Simulator health check
+## Investigation
 
-When Gazebo is required:
+1. Complete `src/simple_dynamics.py` and validate units/limiting cases.
+2. Predict which term dominates static holding, slow motion, and rapid acceleration.
+3. In a copied world/controller, use motor torque feedback when available or prescribed experiment data.
+4. Repeat matched trajectories at two durations and two payload conditions.
+5. Compare predicted trends and measured torque; explain unmodeled friction and multi-link coupling.
 
-```bash
-ros2 control list_controllers
-ros2 topic list
-ros2 action list
-```
+## Rule and submission
 
-## Submission
-
-Submit completed source code, `answers.md`, and evidence supporting your analysis.
+Do not use a simulator inverse-dynamics function. Submit equations, source, trial table/plots, residual analysis, and `answers.md`.

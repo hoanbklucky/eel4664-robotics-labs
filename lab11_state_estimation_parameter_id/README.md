@@ -1,27 +1,21 @@
-# Lab 11 — State Estimation and Parameter Identification
+# Lab 11 ? State Estimation and Parameter Identification
 
-## Purpose
+## Motivation
 
-Estimate joint velocity from sampled position, show how differentiation amplifies noise, filter the estimate, and identify one simple model parameter using least squares. Validate on data not used for fitting.
+Sensors provide samples, not perfect state; useful models must be estimated and then tested on data they did not fit.
 
-## Workflow
+## Learning objectives
 
-1. Read the complete lab before coding.
-2. Reuse validated functions from earlier labs.
-3. Keep frame/kinematic conventions explicit.
-4. Run repeatable experiments.
-5. Put generated data and figures in `results/`.
+Estimate velocity from sampled position; explain noise amplification; implement filtering; identify a simple parameter by least squares; and validate on held-out Webots data.
 
-## Simulator health check
+## Investigation
 
-When Gazebo is required:
-
-```bash
-ros2 control list_controllers
-ros2 topic list
-ros2 action list
-```
+1. Generate repeatable Webots position/command/torque logs using simulation timestamps.
+2. Complete `src/estimate_velocity.py` with backward and centered differences plus an explicit filter.
+3. Compare estimates with a known trajectory derivative or simulator reference reserved for validation.
+4. Complete `src/least_squares_id.py`; state the regressor and parameter meaning.
+5. Fit on one trial and validate on another speed or payload. Report residuals, not only fitted parameters.
 
 ## Submission
 
-Submit completed source code, `answers.md`, and evidence supporting your analysis.
+Submit source, raw-data description, velocity plots/errors, regression derivation, held-out validation, and `answers.md`.

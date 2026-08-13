@@ -1,128 +1,93 @@
-# EEL 4664 — Kinematics and Control of Robotic Systems
+# EEL 4664 - Kinematics and Control of Robotic Systems
 
-## UR5e + ROS 2 Jazzy + Gazebo Laboratory Repository
+## UR5e + Webots Laboratory Repository
 
-This repository contains the hands-on laboratory sequence for **EEL 4664 — Kinematics and Control of Robotic Systems**.
+This repository contains the hands-on laboratory sequence for **EEL 4664 - Kinematics and Control of Robotic Systems**. Webots is the primary simulator; Python and NumPy are the primary implementation tools. ROS 2 and Gazebo are optional advanced topics, not prerequisites.
 
-The labs use one consistent robotics stack:
+The course uses one consistent stack:
 
-- **Windows 11 + WSL2**
-- **Ubuntu 24.04 LTS**
-- **ROS 2 Jazzy**
-- **Gazebo Harmonic / Gazebo Sim**
-- **Universal Robots UR5e**
-- **Python + NumPy** for student implementations
-- **TF2 / RViz** for verification and visualization
-- **ros2_control** for trajectory and joint-control exercises
-- **MoveIt 2** only in the later motion-planning lab
+- **Webots R2025a or a course-pinned later release**
+- the built-in **Universal Robots UR5e** model
+- **Python 3 + NumPy** for student algorithms
+- Webots motors, position sensors, physics, and Supervisor measurements for experiments
+- Matplotlib and CSV files for analysis and evidence
 
-The philosophy of the lab sequence is:
+The sequence follows a Correll-style pattern: begin with an observable robotics problem, form a prediction, implement the mathematics, test it in simulation, quantify the discrepancy, and explain what the result means.
 
-> **derive → implement → simulate → measure → explain**
+> **derive ? predict ? implement ? simulate ? measure ? explain**
 
-Students should not use MoveIt or another library to replace the mathematics in the kinematics labs. The simulator is primarily a way to verify the algorithms that you implement.
+Webots is an experimental apparatus, not a replacement for the mathematics. Students must implement FK, IK, Jacobians, singularity metrics, trajectories, dynamics, controllers, estimators, and identification methods explicitly.
 
 ## Lab sequence
 
 | Lab | Topic | Main concepts |
 |---|---|---|
-| 00 | Set Up | WSL2, Ubuntu, ROS 2 Jazzy, Gazebo, UR5e simulation |
-| 01 | ROS 2, Gazebo, and UR5e | nodes, topics, actions, controllers, joint states |
-| 02 | Coordinate Frames and TF2 | frames, TF tree, frame transformations |
+| 00 | Set Up | Webots, Python, NumPy, UR5e project, first controller |
+| 01 | Webots and the UR5e | worlds, controllers, devices, simulation loop |
+| 02 | Coordinate Frames | frame trees, transformations, simulator measurements |
 | 03 | Homogeneous Transformations | rotations, translations, transform composition |
-| 04 | Forward Kinematics | DH-style transform chains, FK verification with TF |
+| 04 | Forward Kinematics | DH-style chains, FK verification in Webots |
 | 05 | Inverse Kinematics | analytical planar IK, numerical UR5e IK |
 | 06 | Jacobian and Differential Kinematics | Jacobian, Cartesian velocity, pseudoinverse |
 | 07 | Singularities and Manipulability | rank, singular values, condition number |
-| 08 | Trajectory Generation | cubic/quintic trajectories, FollowJointTrajectory |
+| 08 | Trajectory Generation | cubic/quintic trajectories, sampled motor commands |
 | 09 | Manipulator Dynamics | inertia, gravity, payload effects |
-| 10 | Joint-Space Control | P/PD/PID concepts, transient response |
-| 11 | State Estimation and Parameter Identification | numerical differentiation, filtering, parameter fitting |
-| 12 | MoveIt 2 and Collision-Aware Planning | planning scene, obstacles, motion planning |
+| 10 | Joint-Space Control | P/PD/PID concepts, torque control, transient response |
+| 11 | State Estimation and Parameter Identification | differentiation, filtering, least-squares fitting |
+| 12 | Collision-Aware Planning | collision tests, waypoint planning, smoothing |
 | Final | Integrated Manipulation Project | integration and optional sim-to-real transfer |
 
 ## Start here
 
-1. Complete [Lab 00 - Set Up](lab00_setup/README.md).
-2. Confirm that you can launch the UR5e in Gazebo and move it using the standard joint trajectory controller.
-3. Complete labs in numerical order.
+1. Complete [Lab 00 ? Set Up](lab00_setup/README.md).
+2. Open [`webots/worlds/eel4664_ur5e.wbt`](webots/worlds/eel4664_ur5e.wbt) and run the first-motion controller.
+3. Complete labs in numerical order. Each lab reuses code that you wrote earlier.
 
-The expected workspace used in these instructions is:
+## Shared Webots project
 
 ```text
-~/workspaces/ur_gz
+webots/
+??? controllers/eel4664_ur5e/
+?   ??? eel4664_ur5e.py
+?   ??? ur5e_devices.py
+??? libraries/
+??? worlds/eel4664_ur5e.wbt
 ```
 
-If your workspace is somewhere else, replace that path in the commands.
-
-## Common terminal setup
-
-Open a new Ubuntu/WSL terminal and run:
+Open the world from the Webots GUI or run:
 
 ```bash
-source /opt/ros/jazzy/setup.bash
-source ~/workspaces/ur_gz/install/setup.bash
+webots webots/worlds/eel4664_ur5e.wbt
 ```
 
-If you have added both commands to `~/.bashrc`, you do not need to type them every time.
-
-## Launch the UR5e simulation
-
-Unless a lab says otherwise, use:
-
-```bash
-ros2 launch ur_simulation_gz ur_sim_control.launch.py ur_type:=ur5e
-```
-
-Keep that terminal running.
-
-In a second terminal, source ROS and the workspace again before running lab commands.
+Use Reset before each measured trial. Use simulation time from `robot.getTime()` rather than wall-clock time.
 
 ## Rules for student code
 
-- Use **Python 3** and **NumPy** unless the lab explicitly asks for something else.
-- Do not call MoveIt IK or trajectory planning functions in Labs 03–08 unless explicitly instructed.
-- Clearly mark all code you add to starter files.
-- Keep units in **SI units**: radians, meters, seconds, Newtons, and Newton-meters.
-- Your code should run from the command line using the commands in the lab README.
-- Do not change the UR5e model files supplied by Universal Robots unless a lab explicitly asks you to do so.
+- Use Python 3 and NumPy unless a lab states otherwise.
+- Keep mathematical functions separate from Webots I/O so they can be unit tested.
+- Do not use simulator or third-party functions to replace assigned robotics algorithms.
+- Simulator joint sensors and ground-truth poses are measurements for verification only.
+- Keep units in SI and state the coordinate-frame convention and joint order.
+- Record commands, measurements, simulation timestamps, and experiment parameters.
 
 ## Submission convention
 
-For each lab, submit a ZIP or Git repository snapshot containing:
-
-```text
-labXX_.../
-├── README.md
-├── src/
-├── results/
-└── answers.md
-```
-
-Do **not** submit your entire ROS installation, `build/`, `install/`, or `log/` directories.
+For each lab, submit modified starter code, plots or CSV evidence, and `answers.md`. Do not submit a Webots installation, caches, or unrelated assets.
 
 ## Troubleshooting
 
-Before asking for help, record the output of:
+Before asking for help, record the Webots version, complete console error, pause state, world and controller names, Python version, NumPy version, and whether the unmodified world runs after Reset.
 
-```bash
-ros2 pkg list | grep ur_
-ros2 control list_controllers
-ros2 topic list
-ros2 action list
-```
+## Optional advanced ROS 2/Gazebo material
 
-Also include the exact command that failed and the full error message.
+The previous ROS 2 Jazzy, Gazebo, TF2, `ros2_control`, and MoveIt exercises are preserved in [`optional_advanced/ros2_gazebo/`](optional_advanced/ros2_gazebo/README.md). They are not needed for the Webots sequence.
 
-## External documentation
+## References
 
-These labs are designed around the official Universal Robots ROS 2 and Gazebo documentation. Useful references include:
+- Webots User Guide and Reference Manual
+- Webots Universal Robots UR5e model documentation
+- NumPy documentation
+- *Introduction to Autonomous Robots* and associated Correll robotics materials
 
-- Universal Robots ROS 2 documentation
-- `ur_simulation_gz`
-- Universal Robots custom workcell tutorial
-- ROS 2 Jazzy documentation
-- Gazebo Harmonic documentation
-- MoveIt 2 documentation
-
-The repository instructions take precedence for course assignments because they pin the workflow used in EEL 4664.
+Repository instructions take precedence because they define the tested course workflow.

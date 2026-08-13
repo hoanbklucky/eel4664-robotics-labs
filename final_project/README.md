@@ -1,39 +1,38 @@
-# Final Project — Integrated Robotic Manipulation
+# Final Project ? Integrated Robotic Manipulation
 
 ## Goal
 
-Integrate multiple concepts from the semester into one reproducible robotic task.
+Integrate the semester's explicit algorithms into one reproducible Webots UR5e task.
 
-At minimum, your system must use concepts from:
+At minimum use coordinate transformations, FK or IK, trajectory generation or collision-aware planning, feedback/state information, and quantitative evaluation.
 
-- coordinate frames / transformations;
-- forward or inverse kinematics;
-- trajectory generation or motion planning;
-- feedback/state information;
-- quantitative performance evaluation.
+## Baseline challenge
 
-## Baseline simulation challenge
-
-Using the UR5e in Gazebo:
+Using the supplied Webots project:
 
 1. begin from a documented home configuration;
-2. move to a specified approach pose;
-3. reach one or more target poses while respecting joint limits;
+2. compute and reach a specified approach pose;
+3. reach one or more targets while respecting joint limits;
 4. avoid at least one obstacle or forbidden region;
 5. return to a safe final configuration;
 6. log enough data to evaluate execution quantitatively.
 
-A gripper/pick-and-place extension may be assigned depending on the available simulation model and semester schedule.
+A gripper extension may be assigned. Simulator APIs may provide sensing and actuation, but must not replace submitted kinematics, planning, trajectory, control, estimation, or identification algorithms.
+
+## Milestones
+
+1. **Proposal:** task, frames, metric, risks.
+2. **Model checkpoint:** validated geometry and reachable targets.
+3. **Planning/control checkpoint:** collision-free offline tests.
+4. **Integrated demonstration:** repeatable Webots execution and logs.
+5. **Report:** prediction, evidence, discrepancy, failure, mitigation.
 
 ## Required evidence
 
-- system architecture diagram;
-- mathematical formulation;
-- source code and launch instructions;
-- at least one quantitative metric;
-- successful demonstration;
-- discussion of one failure mode and mitigation.
+Submit an architecture diagram, mathematical formulation, source and run instructions, at least two quantitative metrics, successful demonstration, and one failure analysis. Report seeds and initial conditions.
 
-## Optional sim-to-real extension
+## Optional extensions
 
-Adapt selected algorithms to the course 3D-printed arm. Identify what transfers and what must change when geometry, joint limits, actuators, sensing, and control interfaces differ.
+- add a Webots gripper or perception sensor;
+- compare with the optional ROS 2/Gazebo track;
+- transfer selected algorithms to the course arm and identify interface/model changes.

@@ -1,27 +1,21 @@
-# Lab 06 — Jacobian and Differential Kinematics
+# Lab 06 ? Jacobian and Differential Kinematics
 
-## Purpose
+## Motivation
 
-Derive and implement a manipulator Jacobian. Verify it with finite differences, test `dx ≈ J dq`, and use a pseudoinverse to compute joint velocity for a requested Cartesian velocity.
+The Jacobian predicts how joint motion becomes instantaneous tool motion and is the local bridge used by IK and control.
 
-## Workflow
+## Learning objectives
 
-1. Read the complete lab before coding.
-2. Reuse validated functions from earlier labs.
-3. Keep frame/kinematic conventions explicit.
-4. Run repeatable experiments.
-5. Put generated data and figures in `results/`.
+Derive and implement the geometric Jacobian; verify it by finite differences; test `dx ? J dq`; and compute joint velocity with an explicit pseudoinverse.
 
-## Simulator health check
+## Investigation
 
-When Gazebo is required:
-
-```bash
-ros2 control list_controllers
-ros2 topic list
-ros2 action list
-```
+1. Complete `src/jacobian_starter.py` using transforms from Lab 04.
+2. Verify each column with centered finite differences over several step sizes.
+3. Predict tool velocity for a chosen `qdot` and compare with sampled Webots tool motion.
+4. Compute `qdot = J?v` using NumPy SVD, apply a small integrated command, and quantify the achieved velocity.
+5. Explain finite-step, frame, and sensor-sampling errors.
 
 ## Submission
 
-Submit completed source code, `answers.md`, and evidence supporting your analysis.
+Submit derivation, source, finite-difference study, Webots velocity comparison, and `answers.md`.

@@ -1,27 +1,21 @@
-# Lab 07 — Singularities and Manipulability
+# Lab 07 ? Singularities and Manipulability
 
-## Purpose
+## Motivation
 
-Compute singular values, condition number, and a manipulability measure. Compare the required joint velocity norm for the same Cartesian velocity in a well-conditioned and poorly conditioned configuration.
+Some reachable poses are poor operating points: a modest Cartesian request can demand extreme joint motion.
 
-## Workflow
+## Learning objectives
 
-1. Read the complete lab before coding.
-2. Reuse validated functions from earlier labs.
-3. Keep frame/kinematic conventions explicit.
-4. Run repeatable experiments.
-5. Put generated data and figures in `results/`.
+Compute Jacobian rank, singular values, condition number, and manipulability; locate poor configurations; and connect numerical conditioning with observed UR5e motion.
 
-## Simulator health check
+## Investigation
 
-When Gazebo is required:
+1. Complete `src/singularity_scan.py` using your Lab 06 Jacobian.
+2. Scan a documented joint-space slice and visualize the smallest singular value.
+3. Select well- and poorly-conditioned configurations before running Webots.
+4. Request the same small Cartesian velocity at both using your pseudoinverse.
+5. Compare joint-speed norm, achieved tool velocity, and sensitivity to perturbation.
 
-```bash
-ros2 control list_controllers
-ros2 topic list
-ros2 action list
-```
+## Rule and submission
 
-## Submission
-
-Submit completed source code, `answers.md`, and evidence supporting your analysis.
+Webots demonstrates consequences; it does not compute the Jacobian or metric. Submit code, map/plot, two trials, interpretation, and `answers.md`.

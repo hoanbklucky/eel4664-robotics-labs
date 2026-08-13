@@ -1,27 +1,25 @@
-# Lab 05 — Inverse Kinematics
+# Lab 05 ? Inverse Kinematics
 
-## Purpose
+## Motivation
 
-Implement analytical IK for a planar 2R arm, then iterative numerical IK for the UR5e. Use your own FK from Lab 04. Test reachable and problematic targets; report convergence, final error, and sensitivity to initial guess. Do not use MoveIt as the solver.
+Tool goals are Cartesian, but actuators accept joint commands; IK connects those descriptions and exposes reachability and nonuniqueness.
 
-## Workflow
+## Learning objectives
 
-1. Read the complete lab before coding.
-2. Reuse validated functions from earlier labs.
-3. Keep frame/kinematic conventions explicit.
-4. Run repeatable experiments.
-5. Put generated data and figures in `results/`.
+Derive analytical planar 2R IK; implement iterative UR5e IK from your Lab 04 FK/Jacobian; recognize unreachable and ill-conditioned targets; and validate solutions in Webots.
 
-## Simulator health check
+## Investigation
 
-When Gazebo is required:
+1. Complete `src/planar_ik.py`, retaining both elbow branches and checking reachability.
+2. Complete `src/numerical_ik.py` with explicit pose error, convergence criterion, joint limits, and iteration limit.
+3. Test multiple initial guesses for reachable, near-boundary, and unreachable targets.
+4. Command converged joint solutions through the Webots motor adapter using a smooth transition.
+5. Compare predicted and measured final tool poses; report iterations and residuals.
 
-```bash
-ros2 control list_controllers
-ros2 topic list
-ros2 action list
-```
+## Rule
+
+Do not use Webots, MoveIt, SciPy, or another IK solver. General linear algebra such as NumPy SVD is allowed.
 
 ## Submission
 
-Submit completed source code, `answers.md`, and evidence supporting your analysis.
+Submit derivations, source, convergence histories, Webots evidence, failure analysis, and `answers.md`.

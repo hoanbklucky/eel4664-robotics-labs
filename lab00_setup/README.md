@@ -1,205 +1,83 @@
-# Lab 00: Set Up — Windows 11 + WSL2 + Ubuntu 24.04 + ROS 2 Jazzy + Gazebo + UR5e
+# Lab 00 ? Set Up Webots, Python, and the UR5e
 
-Complete Lab 00 **before Lab 01**.
+Complete Lab 00 before Lab 01.
 
-## 1. Install WSL2 and Ubuntu 24.04
+## Motivation
 
-From Windows PowerShell:
+A trustworthy experiment begins with a known apparatus. Install Webots, verify Python/NumPy, inspect the UR5e world, and make one repeatable joint-space motion.
 
-```powershell
-wsl --install -d Ubuntu-24.04
-```
+## Learning objectives
 
-After installation, launch Ubuntu and create your Linux username/password.
+After this lab you should be able to:
 
-Verify inside Ubuntu:
+1. open and reset a Webots world;
+2. distinguish a world, robot model, controller, motor, and sensor;
+3. run a Python controller at the simulator basic time step;
+4. command and measure all six UR5e joints.
 
-```bash
-cat /etc/os-release
-```
+## 1. Install Webots
 
-You should see Ubuntu 24.04 / Noble.
+Install the course-pinned Webots release from Cyberbotics. Webots R2025a or later is recommended. Native Windows, Linux, and macOS installations are supported; native Windows is usually simplest when the repository is stored on Windows.
 
-> Do not install ROS inside the `docker-desktop` WSL distribution.
-
-## 2. Install ROS 2 Jazzy
-
-Follow the official ROS 2 Jazzy Ubuntu Deb installation instructions.
-
-For this course, install the desktop package:
+On Ubuntu with the Cyberbotics APT repository configured:
 
 ```bash
 sudo apt update
-sudo apt install ros-jazzy-desktop
+sudo apt install webots
+webots --version
 ```
 
-Then:
+Otherwise launch Webots from the desktop application menu.
+
+## 2. Install Python dependencies
+
+Use a Python interpreter visible to Webots:
 
 ```bash
-source /opt/ros/jazzy/setup.bash
-ros2 --help
+python3 -m pip install --user numpy matplotlib
+python3 -c "import numpy, matplotlib; print(numpy.__version__)"
 ```
 
-Optional but recommended:
+On Windows, use `py -m pip ...` if needed. In Webots, set **Tools ? Preferences ? Python command** to that interpreter.
+
+## 3. Open the course world
+
+Choose **File ? Open World** and select `webots/worlds/eel4664_ur5e.wbt`. The Scene Tree should contain `UR5e`; its controller should be `eel4664_ur5e`.
+
+## 4. Observe and predict
+
+Press Play. Record the six motor names, initial joint vector, basic time step, and target vector printed in the console. Predict which links will move and whether the tool will rise or fall.
+
+## 5. Run the first-motion experiment
+
+The controller reads each `PositionSensor`, generates a smooth cubic blend, and sends positions to the six `RotationalMotor` devices. It does not use ROS or a trajectory-planning API.
+
+Press **Simulation ? Reset**, then Play. The robot should move once and hold. Compare observation with your prediction.
+
+## 6. Inspect the controller
+
+Read `webots/controllers/eel4664_ur5e/eel4664_ur5e.py` and `ur5e_devices.py`. Identify the sense?compute?act sequence and the single `robot.step(...)` call.
+
+## 7. Verify installation
+
+From the repository root:
 
 ```bash
-echo 'source /opt/ros/jazzy/setup.bash' >> ~/.bashrc
+python3 lab00_setup/verify_installation.py
 ```
 
-## 3. Install common ROS development tools
+The script checks assets and dependencies. The final motion check is visual because Webots owns the controller process.
 
-```bash
-sudo apt update
-sudo apt install -y \
-  python3-colcon-common-extensions \
-  python3-rosdep \
-  git \
-  python3-numpy \
-  ros-jazzy-ros2controlcli \
-  ros-jazzy-ros2-controllers
-```
+## Reflection
 
-Initialize rosdep if needed:
+1. Why use simulation time instead of wall-clock time?
+2. How does a motor target differ from a sensor measurement?
+3. Why reset before comparing trials?
 
-```bash
-sudo rosdep init
-rosdep update
-```
+## Submission
 
-If `rosdep init` reports that it is already initialized, continue.
+Submit verification output, a screenshot of the moving UR5e, and reflection answers.
 
-## 4. Install Gazebo integration
+## Optional advanced path
 
-```bash
-sudo apt update
-sudo apt install ros-jazzy-ros-gz
-```
-
-Test Gazebo:
-
-```bash
-gz sim shapes.sdf
-```
-
-Close Gazebo after confirming that the GUI opens.
-
-## 5. Create the UR Gazebo workspace
-
-The rest of the course assumes:
-
-```text
-~/workspaces/ur_gz
-```
-
-Create it:
-
-```bash
-mkdir -p ~/workspaces/ur_gz/src
-cd ~/workspaces/ur_gz
-```
-
-Clone the official Universal Robots Gazebo simulation repository:
-
-```bash
-source /opt/ros/jazzy/setup.bash
-cd ~/workspaces/ur_gz
-git clone -b ros2 \
-  https://github.com/UniversalRobots/Universal_Robots_ROS2_GZ_Simulation.git \
-  src/ur_simulation_gz
-```
-
-Then resolve dependencies:
-
-```bash
-rosdep update
-rosdep install --ignore-src --from-paths src -y
-```
-
-The upstream repository maintains ROS-distribution-specific dependency metadata (including Jazzy). If the course pins a later tested commit, use the commit listed by the instructor rather than updating arbitrarily during the semester.
-
-Build:
-
-```bash
-colcon build --symlink-install
-```
-
-Source:
-
-```bash
-source ~/workspaces/ur_gz/install/setup.bash
-```
-
-Optional:
-
-```bash
-echo 'source ~/workspaces/ur_gz/install/setup.bash' >> ~/.bashrc
-```
-
-## 6. Verify the UR5e simulation
-
-```bash
-ros2 launch ur_simulation_gz ur_sim_control.launch.py ur_type:=ur5e
-```
-
-In a second terminal:
-
-```bash
-source /opt/ros/jazzy/setup.bash
-source ~/workspaces/ur_gz/install/setup.bash
-ros2 control list_controllers
-```
-
-Expected active controllers include:
-
-```text
-joint_state_broadcaster
-joint_trajectory_controller
-```
-
-Check actions:
-
-```bash
-ros2 action list
-```
-
-You should find:
-
-```text
-/joint_trajectory_controller/follow_joint_trajectory
-```
-
-## 7. Move the UR5e once
-
-With Gazebo still running:
-
-```bash
-ros2 action send_goal \
-/joint_trajectory_controller/follow_joint_trajectory \
-control_msgs/action/FollowJointTrajectory \
-"{trajectory: {
-  joint_names: [
-    shoulder_pan_joint,
-    shoulder_lift_joint,
-    elbow_joint,
-    wrist_1_joint,
-    wrist_2_joint,
-    wrist_3_joint
-  ],
-  points: [{
-    positions: [0.0, -1.2, 1.2, -1.5, -1.57, 0.0],
-    time_from_start: {sec: 5}
-  }]
-}}"
-```
-
-The robot should move over approximately five seconds.
-
-## 8. Run the verification script
-
-From this repository:
-
-```bash
-bash lab00_setup/verify_installation.sh
-```
-
-Fix all reported failures before Lab 01.
+The former ROS 2/Gazebo setup is in [`optional_advanced/ros2_gazebo/lab00_setup/`](../optional_advanced/ros2_gazebo/lab00_setup/README.md).
