@@ -107,6 +107,6 @@ lab12_moveit_collision_planning/results/
 lab12_moveit_collision_planning/results/.gitkeep
 lab12_moveit_collision_planning/src/
 lab12_moveit_collision_planning/src/README_CODE.md
-setup/
-setup/README.md
-setup/verify_installation.sh
+lab00_setup/
+lab00_setup/README.md
+lab00_setup/verify_installation.sh

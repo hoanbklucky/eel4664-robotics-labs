@@ -26,6 +26,7 @@ Students should not use MoveIt or another library to replace the mathematics in 
 
 | Lab | Topic | Main concepts |
 |---|---|---|
+| 00 | Set Up | WSL2, Ubuntu, ROS 2 Jazzy, Gazebo, UR5e simulation |
 | 01 | ROS 2, Gazebo, and UR5e | nodes, topics, actions, controllers, joint states |
 | 02 | Coordinate Frames and TF2 | frames, TF tree, frame transformations |
 | 03 | Homogeneous Transformations | rotations, translations, transform composition |
@@ -42,7 +43,7 @@ Students should not use MoveIt or another library to replace the mathematics in 
 
 ## Start here
 
-1. Complete [`setup/README.md`](setup/README.md).
+1. Complete [Lab 00 - Set Up](lab00_setup/README.md).
 2. Confirm that you can launch the UR5e in Gazebo and move it using the standard joint trajectory controller.
 3. Complete labs in numerical order.
 

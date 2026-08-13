@@ -12,7 +12,7 @@ After this lab you should be able to:
 
 ## Prerequisite
 
-Complete [`../setup/README.md`](../setup/README.md).
+Complete [Lab 00 - Set Up](../lab00_setup/README.md).
 
 
 ## Launch the simulator
